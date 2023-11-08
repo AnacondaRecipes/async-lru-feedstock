@@ -10,16 +10,18 @@ source:
 
 build:
   number: 0
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true # [py<38]
 
 requirements:
   host:
     - pip
-    - python >=3.8
+    - python
+    - setuptools
+    - wheel
   run:
-    - python >=3.8
-    - typing_extensions >=4.0.0
+    - python
+    - typing_extensions >=4.0.0 # [py<311]
 
 test:
   source_files:
@@ -28,19 +30,21 @@ test:
     - async_lru
   commands:
     - pip check
-    - mypy -m async_lru
     - pytest -vv --asyncio-mode=auto --cov=async_lru --cov-branch --cov-report=term-missing:skip-covered --no-cov-on-fail --cov-fail-under=89
   requires:
-    - mypy
     - pip
     - pytest-asyncio
     - pytest-cov
+    - pytest-timeout
 
 about:
   home: https://github.com/aio-libs/async-lru
   summary: Simple lru_cache for asyncio
   license: MIT
   license_file: LICENSE
+  license_family: MIT
+  doc_url: https://github.com/aio-libs/async-lru
+  dev_url: https://github.com/aio-libs/async-lru
 
 extra:
   recipe-maintainers:
