@@ -1,17 +1,18 @@
-{% set version = "2.0.4" %}
+{% set name = "async-lru" %}
+{% set version = "2.0.5" %}
 
 package:
-  name: async-lru
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/a/async_lru/async-lru-{{ version }}.tar.gz
-  sha256: b8a59a5df60805ff63220b2a0c5b5393da5521b113cd5465a44eb037d81a5627
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace('-', '_') }}-{{ version }}.tar.gz
+  sha256: 481d52ccdd27275f42c43a928b4a50c3bfb2d67af4e78b170e3e0bb39c66e5bb
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true # [py<38]
+  skip: true  # [py<39]
 
 requirements:
   host:
@@ -21,7 +22,7 @@ requirements:
     - wheel
   run:
     - python
-    - typing_extensions >=4.0.0 # [py<311]
+    - typing_extensions >=4.0.0  # [py<311]
 
 test:
   source_files:
@@ -40,6 +41,7 @@ test:
 about:
   home: https://github.com/aio-libs/async-lru
   summary: Simple lru_cache for asyncio
+  description: Simple lru_cache for asyncio
   license: MIT
   license_file: LICENSE
   license_family: MIT
